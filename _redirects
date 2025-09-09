@@ -1,0 +1,8 @@
+/submitted        /submitted.html        200
+/ru/submitted     /ru/submitted.html     200
+/et/submitted     /et/submitted.html     200
+
+# Языковые редиректы на первую загрузку (опционально):
+/                 /ru/                   302!    Language=ru
+/                 /et/                   302!    Language=et
+/                 /                      200

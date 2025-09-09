@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>TornStar Feedback</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+
+  /* базовые размеры, чтобы фон всегда перекрывал экран */
+  html, body { height: 100%; margin: 0; }
+
+  body{
+    /* ВАЖНО: абсолютный путь к фону, без повторов */
+    background-image: url('/img1.webp');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    /* на мобилках fixed часто глючит, поэтому отключен по умолчанию */
+    background-attachment: scroll;
+
+    /* остальной твой стиль */
+    background-blend-mode: overlay;
+    background-color: rgba(0,0,0,.003);
+    font-family: 'Montserrat', sans-serif;
+    color: #EFEFEF;
+
+    /* чтобы на мобильных высота учитывала панель адреса */
+    min-height: 100svh;
+  }
+
+  /* затемняющая вуаль поверх фона */
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,.5);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* На десктопе можно включить красивый fixed-параллакс */
+  @media (min-width: 1024px){
+    body{ background-attachment: fixed; }
+  }
+
+  .form-container{
+    background-color: rgba(46,46,46,.6);
+    max-width: 800px;
+    width: min(92vw, 800px);
+    margin: clamp(24px, 6vh, 50px) auto;
+    padding: clamp(16px, 3vw, 20px);
+    border: 2px solid #C9A869;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    border-radius: 20px;
+  }
+
+  textarea,
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  select{
+    background-color: rgba(46,46,46,.8);
+    border: 2px solid #C9A869;
+    padding: 10px;
+    color: #EBE9D8;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  textarea::placeholder, input::placeholder{ color:#EBE9D8; opacity:.7; }
+
+  label{ display:block; margin-bottom:6px; }
+
+  input[type="submit"]{
+    display:block;
+    margin:20px auto 0;
+    background-color: rgba(46,46,46,.8);
+    color:#fff;
+    padding:10px 80px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    box-shadow:
+      0 0 10px rgba(255,255,255,.3),
+      0 0 11px rgba(255,255,100,.5),
+      inset 0 0 10px rgba(255,255,255,1),
+      inset 0 0 11px rgba(255,255,100,.5);
+    transition: transform .15s ease;
+  }
+  input[type="submit"]:hover{ transform: scale(1.05); }
+
+  .parent-container{ display:flex; flex-direction:column; align-items:center; }
+  .parent-container h1{ margin:10px 0 0; text-align:center; font-size: clamp(22px, 4vw, 36px); }
+  .img{ display:flex; justify-content:center; padding-top:10px; }
+  .img img{ width: min(60%, 300px); }
+
+  .language-switcher{ position:relative; display:inline-block; }
+  #currentLang{
+    background-color: rgba(46,46,46,.6);
+    color:#fff;
+    padding:8px 16px;
+    font-size:16px;
+    border:2px solid #C9A869;
+    border-radius:10px;
+    cursor:pointer;
+    margin:15px 0 0 15px;
+  }
+  #langDropdown{
+    display:none;
+    position:absolute;
+    background-color: rgba(46,46,46,.6);
+    min-width:16px;
+    border:2px solid #C9A869;
+    border-radius:10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,.66);
+    z-index:1;
+    margin-left:15px;
+  }
+  #langDropdown a{ display:block; padding:8px 16px; text-decoration:none; }
+  #langDropdown a:hover{
+    background-color: rgba(46,46,46,.6);
+    border:2px solid #C9A869;
+    border-radius:10px;
+  }
+
+  .hidden{ position:absolute; left:-9999px; top:-9999px; visibility:hidden; }
+  .radio-wrap{ margin-bottom:12px; }
+  .radio-row{ display:flex; flex-wrap:wrap; gap:14px; }
+  .radio-item{
+    display:flex; align-items:center; gap:8px;
+    background-color: rgba(46,46,46,.35);
+    border:1px solid #C9A869;
+    border-radius:14px;
+    padding:8px 12px;
+  }
+</style>
+
+</head>
+<body>
+
+  <div class="language-switcher">
+    <button id="currentLang" onclick="toggleDropdown()">
+      <span class="flag-icon flag-icon-gb"></span>
+    </button>
+    <div id="langDropdown" class="dropdown-content">
+      <a href="/ru/"><span class="flag-icon flag-icon-ru"></span></a>
+      <a href="/et/"><span class="flag-icon flag-icon-ee"></span></a>
+      <a href="/"><span class="flag-icon flag-icon-gb"></span></a>
+    </div>
+  </div>
+
+  <div class="img"><img src="/IMG_2096.PNG" alt="TORNSTAR"></div>
+
+  <div class="parent-container">
+    <h1>New talents, ideas, or partnership?</h1>
+    <h1>Let’s talk!</h1>
+  </div>
+
+  <div class="form-container">
+    <!-- Netlify Forms (EN) -->
+    <form name="contact-en" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/submitted" >
+      <input type="hidden" name="form-name" value="contact-en" />
+      <p class="hidden"><label>Don’t fill this: <input name="bot-field" /></label></p>
+
+      <label for="fullname">Full name</label>
+      <input id="fullname" name="fullname" type="text" placeholder="John Smith" required autocomplete="name" />
+
+      <label for="phone">Phone number</label>
+      <input id="phone" name="phone" type="tel" placeholder="+372 5555 5555" required autocomplete="tel" />
+
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" placeholder="name@example.com" required autocomplete="email" />
+
+      <div class="radio-wrap">
+        <label>Topic</label>
+        <div class="radio-row">
+          <label class="radio-item"><input type="radio" name="topic" value="Business proposal" required /> <span>Business proposal</span></label>
+          <label class="radio-item"><input type="radio" name="topic" value="Ideas" /> <span>Ideas</span></label>
+          <label class="radio-item"><input type="radio" name="topic" value="New talents" /> <span>New talents</span></label>
+        </div>
+      </div>
+
+      <input type="submit" value="Submit" />
+    </form>
+  </div>
+
+  <script>
+    function toggleDropdown() {
+      const dd = document.getElementById("langDropdown");
+      dd.style.display = dd.style.display === "block" ? "none" : "block";
+    }
+  </script>
+</body>
+</html>
