@@ -9,24 +9,30 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
 
-  html, body { height: 100%; margin: 0; background-color:#0b0b0c; } /* фон-чёрный на всякий случай */
-  :root{ --gutter: clamp(12px, 4vw, 20px); }
+  /* базовые размеры, чтобы фон всегда перекрывал экран */
+  html, body { height: 100%; margin: 0; }
 
   body{
+    /* ВАЖНО: абсолютный путь к фону, без повторов */
     background-image: url('/img1.webp');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachment: scroll; /* на мобилках fixed глючит */
 
+    /* на мобилках fixed часто глючит, поэтому отключен по умолчанию */
+    background-attachment: scroll;
+
+    /* остальной твой стиль */
     background-blend-mode: overlay;
     background-color: rgba(0,0,0,.003);
     font-family: 'Montserrat', sans-serif;
     color: #EFEFEF;
 
-    min-height: 100svh; /* для мобилок */
+    /* чтобы на мобильных высота учитывала панель адреса */
+    min-height: 100svh;
   }
 
+  /* затемняющая вуаль поверх фона */
   body::before{
     content:"";
     position: fixed;
@@ -36,70 +42,20 @@
     z-index: -1;
   }
 
+  /* На десктопе можно включить красивый fixed-параллакс */
   @media (min-width: 1024px){
     body{ background-attachment: fixed; }
   }
 
-  /* Языковая кнопка */
-  .language-switcher{
-    position: fixed;
-    top: max(12px, env(safe-area-inset-top));
-    left: max(12px, env(safe-area-inset-left));
-    z-index: 10;
-    display: inline-block;
-  }
-  #currentLang{
-    background-color: rgba(46,46,46,.6);
-    color:#fff;
-    padding:8px 16px;
-    font-size:16px;
-    border:2px solid #C9A869;
-    border-radius:10px;
-    cursor:pointer;
-  }
-  #langDropdown{
-    display:none;
-    position:absolute;
-    background-color: rgba(46,46,46,.6);
-    min-width:16px;
-    border:2px solid #C9A869;
-    border-radius:10px;
-    box-shadow: 0 8px 16px rgba(0,0,0,.66);
-    z-index:1;
-    margin-left:15px;
-  }
-  #langDropdown a{ display:block; padding:8px 16px; text-decoration:none; }
-  #langDropdown a:hover{
-    background-color: rgba(46,46,46,.6);
-    border:2px solid #C9A869;
-    border-radius:10px;
-  }
-
-  .img{ display:flex; justify-content:center; padding-top:10px; }
-  .img img{ width: min(60%, 300px); }
-
-  .parent-container{ display:flex; flex-direction:column; align-items:center; }
-  .parent-container h1{ margin:10px 0 0; text-align:center; font-size: clamp(22px, 4vw, 36px); }
-  @media (max-width: 560px){
-    .parent-container h1{ padding: 0 var(--gutter); }
-  }
-
-  /* Контейнер формы */
   .form-container{
     background-color: rgba(46,46,46,.6);
     max-width: 800px;
     width: min(92vw, 800px);
-    margin: clamp(24px, 6vh, 50px) auto clamp(28px, 8vh, 64px);
-    padding: clamp(16px, 3.5vw, 24px);
-    padding-bottom: clamp(24px, 6vh, 48px);
+    margin: clamp(24px, 6vh, 50px) auto;
+    padding: clamp(16px, 3vw, 20px);
     border: 2px solid #C9A869;
     box-shadow: 0 0 10px rgba(0,0,0,.1);
     border-radius: 20px;
-  }
-  @supports (padding: env(safe-area-inset-bottom)){
-    .form-container{
-      padding-bottom: calc(clamp(24px, 6vh, 48px) + env(safe-area-inset-bottom));
-    }
   }
 
   textarea,
@@ -123,7 +79,7 @@
 
   input[type="submit"]{
     display:block;
-    margin:16px auto 0;
+    margin:20px auto 0;
     background-color: rgba(46,46,46,.8);
     color:#fff;
     padding:10px 80px;
@@ -139,66 +95,51 @@
   }
   input[type="submit"]:hover{ transform: scale(1.05); }
 
+  .parent-container{ display:flex; flex-direction:column; align-items:center; }
+  .parent-container h1{ margin:10px 0 0; text-align:center; font-size: clamp(22px, 4vw, 36px); }
+  .img{ display:flex; justify-content:center; padding-top:10px; }
+  .img img{ width: min(60%, 300px); }
+
+  .language-switcher{ position:relative; display:inline-block; }
+  #currentLang{
+    background-color: rgba(46,46,46,.6);
+    color:#fff;
+    padding:8px 16px;
+    font-size:16px;
+    border:2px solid #C9A869;
+    border-radius:10px;
+    cursor:pointer;
+    margin:15px 0 0 15px;
+  }
+  #langDropdown{
+    display:none;
+    position:absolute;
+    background-color: rgba(46,46,46,.6);
+    min-width:16px;
+    border:2px solid #C9A869;
+    border-radius:10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,.66);
+    z-index:1;
+    margin-left:15px;
+  }
+  #langDropdown a{ display:block; padding:8px 16px; text-decoration:none; }
+  #langDropdown a:hover{
+    background-color: rgba(46,46,46,.6);
+    border:2px solid #C9A869;
+    border-radius:10px;
+  }
+
   .hidden{ position:absolute; left:-9999px; top:-9999px; visibility:hidden; }
   .radio-wrap{ margin-bottom:12px; }
-
-  /* Радио — ровная сетка для всех языков */
-  .radio-row{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 12px;
-  }
-  @media (max-width:560px){ .radio-row{ grid-template-columns: 1fr; } }
-
+  .radio-row{ display:flex; flex-wrap:wrap; gap:14px; }
   .radio-item{
     display:flex; align-items:center; gap:8px;
     background-color: rgba(46,46,46,.35);
     border:1px solid #C9A869;
     border-radius:14px;
-    padding:10px 12px;
-  }
-  .radio-item span{ line-height:1.2; word-break:break-word; }
-
-  /* --- Compact mobile tune --- */
-  @media (max-width: 420px){
-
-    .parent-container h1{
-      font-size: clamp(20px, 4.6vw, 28px);
-      line-height: 1.22;
-      margin-top: 6px;
-      padding: 0 14px;
-    }
-
-    .form-container{
-      margin: clamp(12px, 3.5vh, 20px) auto clamp(8px, 2.5vh, 16px);
-      padding: clamp(12px, 3.2vw, 18px);
-      padding-bottom: clamp(18px, 5vh, 28px);
-      width: min(94vw, 800px);
-    }
-
-    label{ margin-bottom: 4px; }
-
-    textarea,
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    select{
-      padding: 9px 12px;
-      margin-bottom: 10px;
-      border-radius: 16px;
-    }
-
-    .radio-row{ grid-template-columns: 1fr; gap: 10px; }
-
-    .radio-item{ padding: 9px 12px; border-radius: 12px; }
-
-    input[type="submit"]{
-      padding: 10px 56px;
-      margin-top: 12px;
-    }
+    padding:8px 12px;
   }
 </style>
-
 
 
 </head>
