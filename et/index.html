@@ -11,6 +11,7 @@
 
   /* базовые размеры, чтобы фон всегда перекрывал экран */
   html, body { height: 100%; margin: 0; }
+  :root{ --gutter: clamp(12px, 4vw, 20px); }
 
   body{
     /* ВАЖНО: абсолютный путь к фону, без повторов */
@@ -22,7 +23,6 @@
     /* на мобилках fixed часто глючит, поэтому отключен по умолчанию */
     background-attachment: scroll;
 
-    /* остальной твой стиль */
     background-blend-mode: overlay;
     background-color: rgba(0,0,0,.003);
     font-family: 'Montserrat', sans-serif;
@@ -47,15 +47,66 @@
     body{ background-attachment: fixed; }
   }
 
+  /* Кнопка языка — фикс вверху с учётом safe-area */
+  .language-switcher{
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    left: max(12px, env(safe-area-inset-left));
+    z-index: 10;
+    display: inline-block;
+  }
+  #currentLang{
+    background-color: rgba(46,46,46,.6);
+    color:#fff;
+    padding:8px 16px;
+    font-size:16px;
+    border:2px solid #C9A869;
+    border-radius:10px;
+    cursor:pointer;
+  }
+  #langDropdown{
+    display:none;
+    position:absolute;
+    background-color: rgba(46,46,46,.6);
+    min-width:16px;
+    border:2px solid #C9A869;
+    border-radius:10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,.66);
+    z-index:1;
+    margin-left:15px;
+  }
+  #langDropdown a{ display:block; padding:8px 16px; text-decoration:none; }
+  #langDropdown a:hover{
+    background-color: rgba(46,46,46,.6);
+    border:2px solid #C9A869;
+    border-radius:10px;
+  }
+
+  .img{ display:flex; justify-content:center; padding-top:10px; }
+  .img img{ width: min(60%, 300px); }
+
+  .parent-container{ display:flex; flex-direction:column; align-items:center; }
+  .parent-container h1{ margin:10px 0 0; text-align:center; font-size: clamp(22px, 4vw, 36px); }
+  @media (max-width: 560px){
+    .parent-container h1{ padding: 0 var(--gutter); }
+  }
+
+  /* Контейнер формы: адаптивные поля + «подушка» снизу */
   .form-container{
     background-color: rgba(46,46,46,.6);
     max-width: 800px;
     width: min(92vw, 800px);
-    margin: clamp(24px, 6vh, 50px) auto;
-    padding: clamp(16px, 3vw, 20px);
+    margin: clamp(24px, 6vh, 50px) auto clamp(28px, 8vh, 64px);
+    padding: clamp(16px, 3.5vw, 24px);
+    padding-bottom: clamp(24px, 6vh, 48px);
     border: 2px solid #C9A869;
     box-shadow: 0 0 10px rgba(0,0,0,.1);
     border-radius: 20px;
+  }
+  @supports (padding: env(safe-area-inset-bottom)){
+    .form-container{
+      padding-bottom: calc(clamp(24px, 6vh, 48px) + env(safe-area-inset-bottom));
+    }
   }
 
   textarea,
@@ -79,7 +130,7 @@
 
   input[type="submit"]{
     display:block;
-    margin:20px auto 0;
+    margin:16px auto 0;
     background-color: rgba(46,46,46,.8);
     color:#fff;
     padding:10px 80px;
@@ -95,50 +146,25 @@
   }
   input[type="submit"]:hover{ transform: scale(1.05); }
 
-  .parent-container{ display:flex; flex-direction:column; align-items:center; }
-  .parent-container h1{ margin:10px 0 0; text-align:center; font-size: clamp(22px, 4vw, 36px); }
-  .img{ display:flex; justify-content:center; padding-top:10px; }
-  .img img{ width: min(60%, 300px); }
-
-  .language-switcher{ position:relative; display:inline-block; }
-  #currentLang{
-    background-color: rgba(46,46,46,.6);
-    color:#fff;
-    padding:8px 16px;
-    font-size:16px;
-    border:2px solid #C9A869;
-    border-radius:10px;
-    cursor:pointer;
-    margin:15px 0 0 15px;
-  }
-  #langDropdown{
-    display:none;
-    position:absolute;
-    background-color: rgba(46,46,46,.6);
-    min-width:16px;
-    border:2px solid #C9A869;
-    border-radius:10px;
-    box-shadow: 0 8px 16px rgba(0,0,0,.66);
-    z-index:1;
-    margin-left:15px;
-  }
-  #langDropdown a{ display:block; padding:8px 16px; text-decoration:none; }
-  #langDropdown a:hover{
-    background-color: rgba(46,46,46,.6);
-    border:2px solid #C9A869;
-    border-radius:10px;
-  }
-
   .hidden{ position:absolute; left:-9999px; top:-9999px; visibility:hidden; }
   .radio-wrap{ margin-bottom:12px; }
-  .radio-row{ display:flex; flex-wrap:wrap; gap:14px; }
+
+  /* Радио — ровная сетка для всех языков */
+  .radio-row{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+  }
+  @media (max-width:560px){ .radio-row{ grid-template-columns: 1fr; } }
+
   .radio-item{
     display:flex; align-items:center; gap:8px;
     background-color: rgba(46,46,46,.35);
     border:1px solid #C9A869;
     border-radius:14px;
-    padding:8px 12px;
+    padding:10px 12px;
   }
+  .radio-item span{ line-height:1.2; word-break:break-word; }
 </style>
 
 </head>
