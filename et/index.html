@@ -9,31 +9,43 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
 
-  html, body { height: 100%; margin: 0; background:#0e0f12; }
+  /* базовые размеры, чтобы фон всегда перекрывал экран */
+  html, body { height: 100%; margin: 0; }
   :root{ --gutter: clamp(12px, 4vw, 20px); }
 
   body{
-    /* высота страницы с учётом мобильных панелей */
-    min-height: 100dvh;     /* современный */
-    min-height: 100svh;     /* fallback */
+    /* ФОН — как было раньше */
+    background-image: url('/img1.webp');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* на мобилках fixed глючит */
+
+    background-blend-mode: overlay;
+    background-color: rgba(0,0,0,.003);
     font-family: 'Montserrat', sans-serif;
     color: #EFEFEF;
-    position: relative;
+
+    /* чтобы на мобильных высота учитывала панель адреса */
+    min-height: 100svh;
   }
 
-  /* ФОН КАК ОТДЕЛЬНЫЙ ФИКСИРОВАННЫЙ СЛОЙ */
+  /* затемняющая вуаль поверх фона (как было) */
   body::before{
-    content: "";
+    content:"";
     position: fixed;
     inset: 0;
+    background-color: rgba(0,0,0,.5);
+    pointer-events: none;
     z-index: -1;
-    background:
-      linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)),
-      url('/img1.webp') center / cover no-repeat;
-    /* всегда перекрывает вьюпорт, даже если страница длиннее */
   }
 
-  /* Кнопка языка — фикс вверху с учётом safe-area */
+  /* На десктопе можно включить параллакс fixed (как было) */
+  @media (min-width: 1024px){
+    body{ background-attachment: fixed; }
+  }
+
+  /* Языковая кнопка (фикс + safe-area) */
   .language-switcher{
     position: fixed;
     top: max(12px, env(safe-area-inset-top));
@@ -77,12 +89,12 @@
     .parent-container h1{ padding: 0 var(--gutter); }
   }
 
-  /* Контейнер формы: адаптивные поля + «подушка» снизу */
+  /* Контейнер формы */
   .form-container{
     background-color: rgba(46,46,46,.6);
     max-width: 800px;
     width: min(92vw, 800px);
-    margin: clamp(24px, 6vh, 50px) auto clamp(20px, 6vh, 48px);
+    margin: clamp(24px, 6vh, 50px) auto clamp(28px, 8vh, 64px);
     padding: clamp(16px, 3.5vw, 24px);
     padding-bottom: clamp(24px, 6vh, 48px);
     border: 2px solid #C9A869;
@@ -152,6 +164,7 @@
   }
   .radio-item span{ line-height:1.2; word-break:break-word; }
 </style>
+
 
 </head>
 <body>
