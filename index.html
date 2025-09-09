@@ -9,12 +9,10 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
 
-  /* базовые размеры, чтобы фон всегда перекрывал экран */
-  html, body { height: 100%; margin: 0; }
+  html, body { height: 100%; margin: 0; background-color:#0b0b0c; } /* фон-чёрный на всякий случай */
   :root{ --gutter: clamp(12px, 4vw, 20px); }
 
   body{
-    /* ФОН — как было раньше */
     background-image: url('/img1.webp');
     background-position: center;
     background-size: cover;
@@ -26,11 +24,9 @@
     font-family: 'Montserrat', sans-serif;
     color: #EFEFEF;
 
-    /* чтобы на мобильных высота учитывала панель адреса */
-    min-height: 100svh;
+    min-height: 100svh; /* для мобилок */
   }
 
-  /* затемняющая вуаль поверх фона (как было) */
   body::before{
     content:"";
     position: fixed;
@@ -40,12 +36,11 @@
     z-index: -1;
   }
 
-  /* На десктопе можно включить параллакс fixed (как было) */
   @media (min-width: 1024px){
     body{ background-attachment: fixed; }
   }
 
-  /* Языковая кнопка (фикс + safe-area) */
+  /* Языковая кнопка */
   .language-switcher{
     position: fixed;
     top: max(12px, env(safe-area-inset-top));
@@ -163,6 +158,45 @@
     padding:10px 12px;
   }
   .radio-item span{ line-height:1.2; word-break:break-word; }
+
+  /* --- Compact mobile tune --- */
+  @media (max-width: 420px){
+
+    .parent-container h1{
+      font-size: clamp(20px, 4.6vw, 28px);
+      line-height: 1.22;
+      margin-top: 6px;
+      padding: 0 14px;
+    }
+
+    .form-container{
+      margin: clamp(12px, 3.5vh, 20px) auto clamp(8px, 2.5vh, 16px);
+      padding: clamp(12px, 3.2vw, 18px);
+      padding-bottom: clamp(18px, 5vh, 28px);
+      width: min(94vw, 800px);
+    }
+
+    label{ margin-bottom: 4px; }
+
+    textarea,
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select{
+      padding: 9px 12px;
+      margin-bottom: 10px;
+      border-radius: 16px;
+    }
+
+    .radio-row{ grid-template-columns: 1fr; gap: 10px; }
+
+    .radio-item{ padding: 9px 12px; border-radius: 12px; }
+
+    input[type="submit"]{
+      padding: 10px 56px;
+      margin-top: 12px;
+    }
+  }
 </style>
 
 
